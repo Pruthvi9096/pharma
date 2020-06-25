@@ -1,0 +1,169 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load tags %}
+<div class="row" style="margin-top: 5%;">
+   
+    <div class="card box-element">
+        <input type="hidden" id="myVar" name="variable" value="{{ request.get_full_path }}">
+        {%if pharmacy and not form%}
+            <div style="display: block;">
+            <h4>{{pharmacy.name}}</h4>
+                <a style="color: white;" href="?edit=true"> <button class="btn btn-success" style="float: right;">Edit</button></a>
+            </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <i class="fa fa-map-marker"></i>&#160;<span id="address">
+                            {{pharmacy.show_address}}
+                        </span>
+                        <br /><br>
+                        <i class="fa fa-phone"></i><span id="contact">
+                            {{pharmacy.contact}}
+                        </span>
+
+                    </div>
+                    <div class="col-md-5">
+                        <br />
+                        <i class="fa fa-truck"></i>
+                        {% if pharmacy.delivery %}
+                        <span id="delivery">Delivery Is Available</span>
+                        {% else %}
+                        <span id="delivery2">Delivery is not Available</span>
+                        {% endif %}
+                        <br />
+                        Delivery Charges : <span id="delivery_charge">
+                            {% if pharmacy.deliver_charges%}
+                            {{pharmacy.deliver_charges}}
+                            {% else %}
+                            0
+                            {% endif %}
+                        </span>&#160;$
+                    </div>
+                </div>
+        {% else %}
+            {% if form %}
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12" style="margin-bottom: 2%;">
+                        {{form.name.label_tag}}
+                        {{form.name}}
+                    </div>
+                    <br/><br/>
+                    <div class="col-md-12" style="margin-bottom: 2%;">
+                        <div class="col-md-6">
+                            {{form.address.label_tag}}
+                            {{form.address|add_css:"form-control"}}
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-sm-4">
+                                {{form.city.label_tag}}
+                                {{form.city|add_css:"form-control"}}
+                            </div>
+                            <div class="col-sm-4">
+                                {{form.state.label_tag}}
+                                {{form.state|add_css:"form-control"}}
+                            </div>
+                            <div class="col-sm-4">
+                                {{form.zipcode.label_tag}}
+                                {{form.zipcode|add_css:"form-control"}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-bottom: 2%;">
+                        <div class="col-md-4">
+                            {{form.contact.label_tag}}
+                            {{form.contact}}
+                        </div>
+                        <div class="col-md-4" >
+                            {{form.delivery.label_tag}}
+                            {{form.delivery}}
+                        </div>
+                        <div class="col-md-4">
+                            {{form.deliver_charges.label_tag}}
+                            {{form.deliver_charges}}
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-bottom: 2%;">
+                        <button class="btn btn-success" type="submit" style="float: right;">
+                            Submit</button>
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+        {% endif %}
+        {% if not pharmacy and not form%}
+            <a href="?create=true"><button class="btn btn-primary">Create Pharmacy</button></a>
+        {% endif%}
+    </div>
+        {% if requests %}
+        <ul class="collapsible">
+            <li class="active">
+              <div class="collapsible-header"><i class="material-icons"></i>Requests</div>
+              <div class="collapsible-body"> 
+                  <table class="highlight">
+                      <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Email</th>
+                              <th>Date</th>
+                              <th>Time</th>
+                              <th>Type</th>
+                              <th>Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for request in requests %}
+                          
+                      <tr onclick="window.parent.location='{% url 'request-detail' request.id %}'">
+                              <td>{{request.first_name}} {{request.last_name}}</td>
+                              <td>{{request.email}}</td>
+                              <td>{{request.pd_date|date}}</td>
+                              <td>{{request.pd_time}}</td>
+                              <td>{{request.type}}</td>
+                              <td>{{request.status}}</td>
+                          </tr>
+                        
+                          {% endfor %}
+                      </tbody>
+
+                   
+                    <ul class="justify-content-start mt-3" style="display: flex; float: right; margin: 10px;">
+                    {% if not requests.has_previous%}
+                    <li class="page-item disabled">
+                        <a class="btn disabled" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    {% endif %}
+                    {% if requests.has_previous%}
+                      <li class="page-item">
+                        <a class="waves-effect waves-light btn-small" href="?page={{requests.previous_page_number}}" tabindex="-1">Previous</a>
+                      </li>
+                    {% endif %}
+                      {% if requests.has_previous%}
+                      <li class="page-item"><a class="waves-effect waves-light btn-small" href="?page={{requests.previous_page_number}}">{{requests.previous_page_number}}</a></li>
+                      {% endif %}
+                      <li class="page-item"><a class="waves-effect waves-light btn-small" href="#">{{requests.number}}</a></li>
+                      {% if requests.has_next%}
+                      <li class="page-item"><a class="waves-effect waves-light btn-small" href="?page={{requests.next_page_number}}">{{requests.next_page_number}}</a></li>
+                      {% endif %}
+                      {% if requests.has_next%}
+                      <li class="page-item">
+                        <a class="waves-effect waves-light btn-small" href="?page={{requests.next_page_number}}">Next</a>
+                      </li>
+                      {% endif %}
+                      {% if not requests.has_next%}
+                        <li class="page-item disabled">
+                            <a class="btn disabled" href="#" tabindex="-1">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </table>
+              </div>
+            </li>
+          </ul>
+        {% endif %}
+</div>
+<script>
+
+</script>
+{% endblock %}

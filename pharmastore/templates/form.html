@@ -1,0 +1,173 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load tags %}
+<div class="row" style="margin-top: 5%;">
+    {% if messages %}
+    <ul class="alert alert-success" style="list-style: none;">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="card box-element">
+        <form action="" name="form" method="post" id="RequestForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label class="control-label mt8 col-form-label" for="search-text">Search Pharmacy</label>
+            <div class="form-group">
+                <div class="ui-widget">
+                    <input id="autocomplete-4" class="form-control autocomplete" required
+                        placeholder="Search by Pharmacy Name, City, State or Zip" onkeyup="myfunction(this)"
+                        onchange="pharmacyDetail(this)">
+                </div>
+            </div>
+            <div class="form-group col-xl-12 mt-8">
+                <p class="text-muted pickup_show">Note: Pharmacies will do their best to have your prescriptions ready at your requested time. Please contact pharmacy to confirm pickup times if you need your prescriptions sooner than 2 hours.</p>
+                <p class="text-muted delivery_show hidden">
+                    Note: By selecting medication for delivery, I agree that the delivery of the same will be carried out through trolleys and / or delivery technicians, to the place identified and / or agreed with by the pharmacy. The medications to be delivered will be accompanied by their corresponding literature. The patient renounces the pharmacist's guidance, establishing that the pharmacist or pharmacist staff will always be available during operational hours to offer guidance to the patient by telephone on the medications to be delivered to the home / agreed location.
+                </p>
+            </div>
+            <div id="pharmacyDetail" class="hidden">
+                <label class="control-label mt8 col-form-label" for="first_name">Pharmacy Details</label>
+                <div class="row">
+                    <div class="col-md-5">
+                        <h5><span id="pharmacy_name"></span></h5>
+                        <i class="fa fa-map-marker"></i>&#160;<span id="address"></span>
+                        <br />
+                        <i class="fa fa-phone"></i><span id="contact"></span>
+
+                    </div>
+                    <div class="col-md-5">
+                        <br />
+                        <i class="fa fa-truck"></i>
+                        <span id="delivery"></span>
+                        <br />
+                        Delivery Charges : <span id="delivery_charge"></span>&#160;$
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 offset-md-1">
+                            <span class="anchor" id="formComplex"></span>
+                            <hr class="my-5">
+                            <!-- form complex example -->
+                            <div>
+                                <div class="card-header">
+                                    <h5 class="mb-0">Enter Your Details</h5>
+                                </div>
+                                <br>
+                                <div class="card-body">
+                                    <div class="row mt-4">
+                                        <div class="col-sm-6 form-group">
+                                            {{form.type.label_tag}}
+                                            {{form.type|add_css:"form-control"}}
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-sm-6 form-group">
+                                            {{form.pd_date.label_tag}}
+                                            {{form.pd_date|add_css:"form-control"}}
+                                            {% if form.pd_date.errors %}
+                                            {% for error in form.pd_date.errors %}
+                                            <div class="alert alert-danger validation">
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{form.pd_time.label_tag}}
+                                            {{form.pd_time|add_css:"form-control timepicker"}}
+                                            {% if form.pd_time.errors %}
+                                            {% for error in form.pd_time.errors %}
+                                            <div class="alert alert-danger validation">
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{form.first_name.label_tag}}
+                                            {{form.first_name|add_css:"form-control"}}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{form.last_name.label_tag}}
+                                            {{form.last_name|add_css:"form-control"}}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{form.dob.label_tag}}
+                                            {{form.dob|add_css:"form-control"}}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{form.phone.label_tag}}
+                                            {{form.phone|add_css:"form-control"}}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{form.email.label_tag}}
+                                            {{form.email|add_css:"form-control"}}
+                                            {{form.note.label_tag}}
+                                            {{form.note|add_css:"form-control"}}
+                                        </div>
+                                        <div class="col-sm-6 form-group" style="padding: 0% 2% 0% 2%;">
+                                            {{form.address.label_tag}}
+                                            {{form.address|add_css:"form-control"}}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <div class="col-sm-3 form-group" style="padding: 0%; margin-left: 2%;">
+                                                {{form.city|add_css:"form-control"}}
+                                            </div>
+                                            <div class="col-sm-3 form-group" style="padding: 0%; margin-left: 2%;">
+                                                {{form.state|add_css:"form-control"}}
+                                            </div>
+                                            <div class="col-sm-3 form-group" style="padding: 0%; margin-left: 2%;">
+                                                {{form.zip|add_css:"form-control"}}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 form-group hidden">
+                                            {{form.pharmacy.label_tag}}
+                                            {{form.pharmacy|add_css:"form-control"}}
+                                            {{form.status.label_tag}}
+                                            {{form.status|add_css:"form-control"}}
+                                        </div>
+                                        <div class="col-sm-12 form-group">
+                                            {{form.images.label_tag}}
+                                            {{form.images|add_css:"form-control"}}
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <!--/card-->
+                        </div>
+                    </div>
+                    <!--/row-->
+                    <input type="submit" class="btn btn-success" value="Submit">
+
+        </form>
+    </div>
+</div>
+
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#id_type').change(function (e) { 
+            e.preventDefault();
+            if ($('#id_type').val() == 'delivery'){
+                $('.delivery_show').removeClass('hidden');
+                $('.pickup_show').addClass('hidden');
+            }
+            if ($('#id_type').val() == 'pickup'){
+                $('.pickup_show').removeClass('hidden');
+                $('.delivery_show').addClass('hidden');
+            }
+        });
+    });
+</script>
+
+
+</div>
+{% endblock %}

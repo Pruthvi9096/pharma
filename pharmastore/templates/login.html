@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load tags %}
+<div class="row" style="margin-top: 5%;">
+    {% if messages %}
+    <ul class="alert alert-danger" style="list-style: none;">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 card box-element text-center">
+                <h3>Log In</h3>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="text-left">
+                    {{form}}
+                </div>
+                <br/><br/>
+                <div class="text-center">
+                <button class="btn btn-primary" type="submit">Login</button>
+                </div>
+                <br>
+            </form>
+                    <div class="text-muted">
+                        <a href="{% url 'password_reset'%}">forgot password?</a> or 
+                       <a href="{% url 'signup' %}"> <span class="custom-badge badge blue" style="float: none;">Register</span></a>
+                    </div>
+
+                </div>
+            <div class="col-md-3"></div>
+        </div>
+
+</div>
+</div>
+
+{% endblock%}

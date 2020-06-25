@@ -1,0 +1,59 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load tags %}
+<div class="row" style="margin-top: 5%;">
+    {% if messages %}
+    <ul class="alert alert-danger" style="list-style: none;">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 card box-element text-center">
+                <h3>SignUp</h3>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="text-left">
+                    <div>
+                        {{form.username.label_tag}}
+                        {{form.username}}
+                        <div class="text-muted" style="font-size: x-small;">
+                            {{form.username.help_text}}
+                        </div>
+                    </div>
+                    <br/>
+                    <div>
+                        {{form.password1.label_tag}}
+                        {{form.password1}}
+                        <div class="text-muted" style="font-size: x-small;">
+                            {{form.password1.help_text}}
+                        </div>
+                    </div>
+                    <br/>
+                    <div>
+                        {{form.password2.label_tag}}
+                        {{form.password2}}
+                        <div class="text-muted" style="font-size: x-small;">
+                            {{form.password2.help_text}}
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+                <br/><br/>
+                <div class="text-center">
+                <button class="btn btn-primary" type="submit">SignUp</button>
+                </div>
+                </form>
+
+                </div>
+            <div class="col-md-3"></div>
+        </div>
+
+</div>
+</div>
+
+{% endblock%}

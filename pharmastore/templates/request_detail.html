@@ -1,0 +1,96 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="row" style="margin-top: 5%;">
+    <div class="card box-element">
+        <a href="{% url 'index' %}" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">arrow_back</i></a>
+        <div>
+            <div class="card-header" style="display: block;">
+                <h5 class="mb-0">Request Details</h5>
+                {% if request.status != 'done'%}
+                {% if request.type == 'pickup'%}
+                <a href="{% url 'request-done' request.id %}"><button style="float: right;" class="btn btn-primary">Pick Done</button></a>
+                {% endif%}
+                {% if request.type == 'delivery'%}
+                <a href="{% url 'request-done' request.id  %}"><button style="float: right;" class="btn btn-primary">Delivered</button></a>
+                {% endif%}
+                {% endif %}
+            </div>
+            <br>
+            <div class="card-body">
+                <div class="row mt-4">
+                    <div class="col-sm-6">
+                        <strong><label>Name:</label></strong>
+                        {{request.first_name}} {{request.last_name}}
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Status:</label>
+                        {{request.status}}
+                    </div>
+                    <div class="col-sm-6">
+                        <label>DOB:</label>
+                        {{request.dob|date}}
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Delivery/Pickup Date:</label>
+                        {{request.pd_date|date}}
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Email:</label>
+                        {{request.email}}
+
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Delivery/Pickup Time:</label>
+                        {{request.pd_time}}
+
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Phone:</label>
+                        {{request.phone}}
+
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Type:</label>
+                        {{request.type}}
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Address:</label>
+                        {{request.address}}
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Note:</label>
+                        {{request.note}}
+                    </div>
+
+                    <div class="col-sm-12" style="padding: 0px;">
+                        <div class="col-sm-2">
+                            <label>City:</label>
+                            {{request.city}}
+                        </div>
+                        <div class="col-sm-2">
+                            <label>State:</label>
+                            {{request.state}}
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Zip:</label>
+                            {{request.zip}}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row mt-4">
+                    {% if request.images %}
+                    <div class="col-sm-12">
+                        <label>Images:</label>
+                        <br>
+                        <img src="{{request.images.url}}" alt="img" style="width: 25%;"
+                            onclick="window.parent.location='{{request.images.url}}'">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

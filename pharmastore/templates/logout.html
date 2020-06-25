@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load tags %}
+<div class="row" style="margin-top: 5%;">
+   
+    <div class="card box-element">
+        <h3>Logged Out</h3>
+ <div class="content">
+        <div class="section-inner clearfix">
+ 
+        <p>You are logged out. <a href="{% url 'login' %}">Click here</a> to login again.</p>
+ 
+        </div>
+    </div>
+
+</div>
+</div>
+
+{% endblock%}
