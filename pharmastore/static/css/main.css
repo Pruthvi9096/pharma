@@ -29,3 +29,7 @@ h1,h2,h3,h4,h5,h6{
     /* background-color: #26a69a; */
     border-radius: 2px;
 }
+.ui-menu .ui-menu-item:hover, .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus {
+    background-color: red;
+    font-weight: bold;
+}
